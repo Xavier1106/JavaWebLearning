@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JS</title>
+</head>
+<body>
+<img src="resources/img/off.gif" id="light_bulb" onclick="bulb_switch()">
+<form action="" method="post">
+    <div>
+        <label>
+            用户名：
+            <input type="text" name="username" placeholder="username">
+        </label>
+    </div>
+    <div>
+        <label>
+            密码：
+            <input type="password" name="password" placeholder="password">
+        </label>
+    </div>
+    <div>
+        <label>
+            记住密码
+            <input type="checkbox" name="remember me">
+        </label>
+        <label>
+            自动登录
+            <input type="checkbox" name="auto login">
+        </label>
+    </div>
+    <div>
+        <label>
+            验证码
+            <input id="verifier" type="text" name="verifier" placeholder="TEST" onfocus="toLower()" onblur="toUpper()">
+        </label>
+    </div>
+    <div>
+        <input type="submit" value="submit">
+        <input type="reset" value="reset">
+    </div>
+</form>
+<input type="button" value="say hello" onclick="hello_world()">
+<input type="button" value="select all" onclick="selectAll()">
+<script src="static/JS/demo.js"></script>
+</body>
+</html>
