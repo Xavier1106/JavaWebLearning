@@ -3,45 +3,171 @@
 <head>
     <meta charset="UTF-8">
     <title>JS</title>
+    <script src="JS/vue.js"></script>
+    <script src="JS/axios-0.18.0.js"></script>
+    <style>
+        td, th, table {
+            border-color: black;
+            border-style: solid;
+            border-collapse: collapse;
+        }
+    </style>
 </head>
 <body>
-<img src="resources/img/off.gif" id="light_bulb" onclick="bulb_switch()">
-<form action="" method="post">
-    <div>
-        <label>
-            用户名：
-            <input type="text" name="username" placeholder="username">
-        </label>
-    </div>
-    <div>
-        <label>
-            密码：
-            <input type="password" name="password" placeholder="password">
-        </label>
-    </div>
-    <div>
-        <label>
-            记住密码
-            <input type="checkbox" name="remember me">
-        </label>
-        <label>
-            自动登录
-            <input type="checkbox" name="auto login">
-        </label>
-    </div>
-    <div>
-        <label>
-            验证码
-            <input id="verifier" type="text" name="verifier" placeholder="TEST" onfocus="toLower()" onblur="toUpper()">
-        </label>
-    </div>
-    <div>
-        <input type="submit" value="submit">
-        <input type="reset" value="reset">
-    </div>
-</form>
-<input type="button" value="say hello" onclick="hello_world()">
-<input type="button" value="select all" onclick="selectAll()">
-<script src="static/JS/demo.js"></script>
+<div id="text_input">
+    <input type="text" v-model="message">{{message}}
+</div>
+<input id="button" type="button" v-on:click="say_hi" v-bind:value="btn_name">
+<div id="age_input">
+    <input type="text" v-model="age">
+    <span v-if="age<=35">青年</span>
+    <span v-else-if="age>35&&age<=60">中年</span>
+    <span v-else>老年</span>
+    <br>
+    <span v-show="age<=35">青年</span>
+    <span v-show="age>35&&age<=60">中年</span>
+    <span v-show="age>60">老年</span>
+</div>
+<div id="array">
+    <div v-for="name in names">{{name}}</div>
+    <br>
+    <div v-for="(name,index) in names">{{index + 1}}:{{name}}</div>
+</div>
+<table id="table">
+    <tr>
+        <th>id</th>
+        <th>name</th>
+        <th>age</th>
+        <th>score</th>
+        <th>grade</th>
+    </tr>
+    <tr v-for="(member,index) in users">
+        <td>{{index + 1}}</td>
+        <td>{{member.name}}</td>
+        <td>{{member.age}}</td>
+        <td>{{member.score}}</td>
+        <td>
+            <span style="color: aqua" v-if="member.score>=90">A</span>
+            <span v-else-if="member.score>=60">B</span>
+            <span style="color: red" v-else>F</span>
+        </td>
+    </tr>
+</table>
+<input type="button" value="get Data:Ajax" onclick="getData()">
+<div id="div1">123</div>
+<input type="button" value="get Data:Axios" onclick="get()">
+<input type="button" value="post Data:Axios" onclick="post()">
+<div id="axios_get">123</div>
+<div id="axios_post">123</div>
 </body>
+<script>
+
+    //text input
+    new Vue({
+        el: "#text_input",
+        data: {
+            message: "Hello Vue!"
+        }
+    })
+    //button
+    new Vue({
+        el: "#button",
+        data: {
+            btn_name: "my button"
+        },
+        methods: {
+            say_hi() {
+                alert("hi");
+            }
+        }
+    })
+    //age input
+    new Vue({
+        el: "#age_input",
+        data: {
+            age: "20"
+        }
+    })
+    //array
+    new Vue({
+        el: "#array",
+        data: {
+            names: ["xavier", "daniel", "michael"]
+        }
+    })
+    new Vue({
+        el: "#table",
+        data: {
+            users: [{
+                name: "xavier",
+                age: "22",
+                gender: "1",
+                score: "60"
+            }, {
+                name: "daniel",
+                age: "20",
+                gender: "1",
+                score: "70"
+            }, {
+                name: "micheal",
+                age: "60",
+                gender: "1",
+                score: "80"
+            }, {
+                name: "florence",
+                age: "56",
+                gender: "2",
+                score: "90"
+            }]
+        }
+    })
+    // new Vue({
+    //     el: "#test_mounted",
+    //     data: {},
+    //     methods: {},
+    //     mounted() {
+    //         //alert("hihi")
+    //     }
+    // })
+
+    function getData() {
+        let xmlHttpRequest = new XMLHttpRequest();
+
+        xmlHttpRequest.open("get", "http://yapi.smart-xwork.cn/mock/169327/emp/list");
+        xmlHttpRequest.send();
+
+        xmlHttpRequest.onreadystatechange = function () {
+            if (xmlHttpRequest.readyState == 4 && xmlHttpRequest.status == 200) {
+                document.getElementById("div1").innerHTML = xmlHttpRequest.responseText;
+            }
+        }
+    }
+
+    function get() {
+        // axios({
+        //     method: "get",
+        //     url: "http://yapi.smart-xwork.cn/mock/169327/emp/list"
+        // }).then((result) => {
+        //     document.getElementById("axios_get").innerHTML = result.text();
+        // })
+        alert("getting");
+        axios.get("http://yapi.smart-xwork.cn/mock/169327/emp/list").then((result) => {
+            console.log(result.data);
+        });
+    }
+
+    function post() {
+        // axios({
+        //     method: "post",
+        //     url: "http://yapi.smart-xwork.cn/mock/169327/emp/deleteById",
+        //     data: "id=1"
+        // }).then((result) => {
+        //     document.getElementById("axios_post").innerHTML = result.text();
+        // })
+        alert("posting");
+        axios.post("http://yapi.smart-xwork.cn/mock/169327/emp/deleteById", "id=1").then((result) => {
+            console.log(result.data);
+        });
+    }
+</script>
 </html>
