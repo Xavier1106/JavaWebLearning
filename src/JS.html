@@ -18,23 +18,49 @@
     <tr>
         <th>id</th>
         <th>name</th>
-        <th>age</th>
-        <th>score</th>
-        <th>grade</th>
+        <th>img</th>
+        <th>gender</th>
+        <th>position</th>
+        <th>entry date</th>
+        <th>update time</th>
     </tr>
-    <tr v-for="(member,index) in users">
-        <td>{{index + 1}}</td>
-        <td>{{member.name}}</td>
-        <td>{{member.age}}</td>
-        <td>{{member.score}}</td>
+    <tr v-for="e in employees">
+        <td>{{e.id}}</td>
+        <td>{{e.name}}</td>
         <td>
-            <span style="color: aqua" v-if="member.score>=90">A</span>
-            <span v-else-if="member.score>=60">B</span>
-            <span style="color: red" v-else>F</span>
+            <img v-bind:src="e.image" width="70px" height="50px" alt="null">
         </td>
+        <td>
+            <span v-if="e.gender==1">Male</span>
+            <span v-else-if="e.gender==2">Female</span>
+            <span v-else>Else</span>
+        </td>
+        <td>{{e.job}}</td>
+        <td>{{e.entrydate}}</td>
+        <td>{{e.updatetime}}</td>
     </tr>
 </table>
 </body>
 <script>
+    new Vue({
+        el: "#table",
+        data: {
+            employees: [{
+                id: "-1",
+                name: "dummy",
+                img: "null",
+                job: "broke",
+                gender: "3",
+                entrydate: "2000-01-01 00:00:00",
+                updatetime: "2000-01-01 00:00:00"
+            }]
+        },
+        methods: {},
+        mounted() {
+            axios.get("http://yapi.smart-xwork.cn/mock/169327/emp/list").then((result) => {
+                this.employees = result.data.data;
+            });
+        }
+    })
 </script>
 </html>
